@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -d ~/.save ]; then
+  mkdir ~/.save
+fi
+
+i=$(ls ~/.save/ -1 | wc -l)
+let j=i++
+
+cargs="${@:1}"
+
+if [ ! -z "$cargs" ];  then
+  echo "$cargs" > ~/.save/$j
+  echo "command successfully saved."
+else
+  echo "empty command cannot be saved :)"
+  exit 1
+fi
