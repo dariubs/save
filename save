@@ -1,16 +1,20 @@
 #!/bin/bash
 
+# check if ~/.save not exists to create it
 if [ ! -d ~/.save ]; then
   mkdir ~/.save
 fi
 
-i=$(ls ~/.save/ -1 | wc -l)
-let j=i++
-
 cargs="${@:1}"
 
+fl=$1
+if [ "$fl" = "sudo" ]
+then
+  f1=$2
+fi
+
 if [ ! -z "$cargs" ];  then
-  echo "$cargs" > ~/.save/$j
+  printf "$cargs\n" >> ~/.save/$fl
   echo "command successfully saved."
 else
   echo "empty command cannot be saved :)"
