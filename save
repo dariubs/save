@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# get piped data
+read piped
+echo $piped
+
 # check if ~/.save not exists to create it
 if [ ! -d ~/.save ]; then
   mkdir ~/.save
