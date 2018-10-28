@@ -5,9 +5,7 @@ read piped
 echo $piped
 
 # check if ~/.save not exists to create it
-if [ ! -d ~/.save ]; then
-  mkdir ~/.save
-fi
+[ -d ~/.save] || mkdir ~/.save
 
 cargs="${@:1}"
 
