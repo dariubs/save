@@ -1,22 +1,67 @@
 #!/bin/bash
 
-# get piped data
-read piped
-echo $piped
+VERSION="0.0.1"
+PARAMS=""
+
+# Parse flags
+# Only parse flags with one parameter
+# Ignore all flags after first non flag or flag value
+while (( "$#" )); do
+  case "$1" in
+    -a|--alias) # specify alias name for command
+      # TODO : check if alias name is a command or an alias
+      # throw error (with exit 1) if alias in path
+      ALS=$2
+      shift 2
+      ;;
+    -c|--comment) # create a comment for command
+      # TODO : check if comment is in '' or ""
+      # it's because flag parser just parse one parameter
+      CMNT=$2
+      shift 2
+      ;;
+
+    -v|--version) # show save version and exit
+      echo $VERSION
+      exit 0
+      ;;
+
+    -h|--help) # help
+      echo 'Save command help.' # TODO : write some help
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      break
+      ;;
+  esac
+done
 
 # check if ~/.save not exists to create it
-[ -d ~/.save] || mkdir ~/.save
+[ -d ~/.save/commands ] || mkdir -p ~/.save/commands
 
+# command to save
 cargs="${@:1}"
 
-fl=$1
-if [ "$fl" = "sudo" ]
+# shift if sudo
+if [ "$1" = "sudo" ]
 then
-  f1=$2
+  shift
 fi
 
 if [ ! -z "$cargs" ];  then
-  printf "$cargs\n" >> ~/.save/$fl
+  # remove if command exactly exists in file
+  [ -f ~/.save/commands/$1 ] && sed -i "/^$cargs\b/Id" ~/.save/commands/$1
+  # echo command in file
+  printf "$cargs\n" >> ~/.save/commands/$1
+  # TODO : add alias and comment
   echo "command successfully saved."
 else
   echo "empty command cannot be saved :)"
