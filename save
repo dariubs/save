@@ -9,7 +9,15 @@ PARAMS=""
 while (( "$#" )); do
   case "$1" in
     -a|--alias) # specify alias name for command
-      # TODO : check if alias name is a command or an alias
+      # TODO: check if alias name is a command
+      # check if command exists or not
+      command -v $2
+      if [ $? = 0 ]
+      then
+        printf "cannot use %s as alias. It is already a command in your system.\n" $2
+        exit 1
+      fi
+
       # throw error (with exit 1) if alias in path
       ALS=$2
       shift 2
