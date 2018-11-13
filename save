@@ -22,6 +22,11 @@ while (( "$#" )); do
       ALS=$2
       shift 2
       ;;
+    -l|--list) # list of commands
+      ls ~/.save/commands/
+      shift 1
+      exit 0
+      ;;
     -c|--comment) # create a comment for command
       # TODO : check if comment is in '' or ""
       # it's because flag parser just parse one parameter
